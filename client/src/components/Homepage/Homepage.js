@@ -8,6 +8,7 @@ import {AuthForm} from "../Forms/authForm";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {Truck} from "./Truck/Truck";
+import {registration} from "../../http/userAPI";
 
 
 export const Homepage = ({func}) => {
@@ -56,11 +57,14 @@ export const Homepage = ({func}) => {
                 .required('Password must be entered'),
         }),
         onSubmit: values => {
-
+            console.log(process.env.REACT_APP_API_URL)
             if (openModalSignup) {
-                localStorage.setItem(person, JSON.stringify({email: values.email, password: values.password}));
-                closeSignup()
-                openLogin()
+                // localStorage.setItem(person, JSON.stringify({email: values.email, password: values.password}));
+                registration(values.email, values.password).then(data => {
+                    console.log(data);
+                    // closeSignup()
+                    // openLogin()
+                })
             } else if (openModalLogin) {
                 let checkPerson = JSON.parse(localStorage.getItem(person));
                 if (values.email === checkPerson.email) {
